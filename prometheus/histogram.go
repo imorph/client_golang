@@ -858,15 +858,25 @@ func (h *histogram) Write(out *dto.Metric) error {
 // findBucket returns the index of the bucket for the provided value, or
 // len(h.upperBounds) for the +Inf bucket.
 func (h *histogram) findBucket(v float64) int {
-	// TODO(beorn7): For small numbers of buckets (<30), a linear search is
-	// slightly faster than the binary search. If we really care, we could
-	// switch from one search strategy to the other depending on the number
-	// of buckets.
-	//
-	// Microbenchmarks (BenchmarkHistogramNoLabels):
-	// 11 buckets: 38.3 ns/op linear - binary 48.7 ns/op
-	// 100 buckets: 78.1 ns/op linear - binary 54.9 ns/op
-	// 300 buckets: 154 ns/op linear - binary 61.6 ns/op
+	n := len(h.upperBounds)
+
+	// For small arrays, use simple linear search
+	if n < 35 {
+		for i, bound := range h.upperBounds {
+			if v <= bound {
+				return i
+			}
+		}
+		// If v is greater than all upper bounds, return len(h.upperBounds)
+		return n
+	}
+
+	// For larger arrays, use binary search with early exit optimization
+	// Early exit: if v is greater than the last upper bound, return len(h.upperBounds)
+	if v > h.upperBounds[n-1] {
+		return n
+	}
+
 	return sort.SearchFloat64s(h.upperBounds, v)
 }
 
