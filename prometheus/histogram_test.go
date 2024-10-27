@@ -1455,3 +1455,30 @@ func compareNativeExemplarValues(t *testing.T, exps []*dto.Exemplar, values []fl
 		}
 	}
 }
+
+var resultFindBucket int
+
+func benchmarkFindBucket(b *testing.B, l int) {
+	h := &histogram{upperBounds: make([]float64, l)}
+	for i := range h.upperBounds {
+		h.upperBounds[i] = float64(i)
+	}
+	v := float64(l / 2)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		resultFindBucket = h.findBucket(v)
+	}
+}
+
+func BenchmarkFindBucketShort(b *testing.B) {
+	benchmarkFindBucket(b, 20)
+}
+
+func BenchmarkFindBucketMid(b *testing.B) {
+	benchmarkFindBucket(b, 40)
+}
+
+func BenchmarkFindBucketLarge(b *testing.B) {
+	benchmarkFindBucket(b, 100)
+}
