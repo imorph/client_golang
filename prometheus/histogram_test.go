@@ -1486,3 +1486,16 @@ func BenchmarkFindBucketLarge(b *testing.B) {
 func BenchmarkFindBucketHuge(b *testing.B) {
 	benchmarkFindBucket(b, 500)
 }
+
+func BenchmarkFindBucketNone(b *testing.B) {
+	h := &histogram{upperBounds: make([]float64, 500)}
+	for i := range h.upperBounds {
+		h.upperBounds[i] = float64(i)
+	}
+	v := 1000.5
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		resultFindBucket = h.findBucket(v)
+	}
+}
