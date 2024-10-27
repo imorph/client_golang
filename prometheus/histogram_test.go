@@ -1499,3 +1499,34 @@ func BenchmarkFindBucketNone(b *testing.B) {
 		resultFindBucket = h.findBucket(v)
 	}
 }
+
+func TestFindBucket(t *testing.T) {
+	smallHistogram := &histogram{upperBounds: []float64{1, 2, 3, 4, 5}}
+	largeHistogram := &histogram{upperBounds: make([]float64, 50)}
+	for i := range largeHistogram.upperBounds {
+		largeHistogram.upperBounds[i] = float64(i)
+	}
+
+	tests := []struct {
+		h        *histogram
+		v        float64
+		expected int
+	}{
+		{smallHistogram, -1, 0},
+		{smallHistogram, 0.5, 0},
+		{smallHistogram, 2.5, 2},
+		{smallHistogram, 5.5, 5},
+		{largeHistogram, -1, 0},
+		{largeHistogram, 25.5, 26},
+		{largeHistogram, 49.5, 50},
+		{largeHistogram, 50.5, 50},
+		{largeHistogram, 5000.5, 50},
+	}
+
+	for _, tt := range tests {
+		result := tt.h.findBucket(tt.v)
+		if result != tt.expected {
+			t.Errorf("findBucket(%v) = %d; expected %d", tt.v, result, tt.expected)
+		}
+	}
+}
