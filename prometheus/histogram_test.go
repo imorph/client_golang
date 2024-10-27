@@ -1482,3 +1482,7 @@ func BenchmarkFindBucketMid(b *testing.B) {
 func BenchmarkFindBucketLarge(b *testing.B) {
 	benchmarkFindBucket(b, 100)
 }
+
+func BenchmarkFindBucketHuge(b *testing.B) {
+	benchmarkFindBucket(b, 500)
+}
