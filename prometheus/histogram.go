@@ -860,6 +860,11 @@ func (h *histogram) Write(out *dto.Metric) error {
 func (h *histogram) findBucket(v float64) int {
 	n := len(h.upperBounds)
 
+	// Early exit: if v is less than or equal to the first upper bound, return 0
+	if v <= h.upperBounds[0] {
+		return 0
+	}
+
 	// For small arrays, use simple linear search
 	if n < 35 {
 		for i, bound := range h.upperBounds {
