@@ -858,12 +858,15 @@ func (h *histogram) Write(out *dto.Metric) error {
 // findBucket returns the index of the bucket for the provided value, or
 // len(h.upperBounds) for the +Inf bucket.
 func (h *histogram) findBucket(v float64) int {
+	n := len(h.upperBounds)
+	if n == 0 {
+		return 0
+	}
+
 	// Early exit: if v is less than or equal to the first upper bound, return 0
 	if v <= h.upperBounds[0] {
 		return 0
 	}
-
-	n := len(h.upperBounds)
 
 	// Early exit: if v is greater than the last upper bound, return len(h.upperBounds)
 	if v > h.upperBounds[n-1] {
