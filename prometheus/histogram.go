@@ -858,14 +858,21 @@ func (h *histogram) Write(out *dto.Metric) error {
 // findBucket returns the index of the bucket for the provided value, or
 // len(h.upperBounds) for the +Inf bucket.
 func (h *histogram) findBucket(v float64) int {
-	n := len(h.upperBounds)
-
 	// Early exit: if v is less than or equal to the first upper bound, return 0
 	if v <= h.upperBounds[0] {
 		return 0
 	}
 
+	n := len(h.upperBounds)
+
+	// Early exit: if v is greater than the last upper bound, return len(h.upperBounds)
+	if v > h.upperBounds[n-1] {
+		return n
+	}
+
 	// For small arrays, use simple linear search
+	// "magic number" 35 is result of tests on couple different (AWS and baremetal) servers
+	// see more details here: https://github.com/prometheus/client_golang/pull/1662
 	if n < 35 {
 		for i, bound := range h.upperBounds {
 			if v <= bound {
@@ -876,12 +883,7 @@ func (h *histogram) findBucket(v float64) int {
 		return n
 	}
 
-	// For larger arrays, use binary search with early exit optimization
-	// Early exit: if v is greater than the last upper bound, return len(h.upperBounds)
-	if v > h.upperBounds[n-1] {
-		return n
-	}
-
+	// For larger arrays, use stdlib's binary search
 	return sort.SearchFloat64s(h.upperBounds, v)
 }
 
