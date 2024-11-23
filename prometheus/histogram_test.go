@@ -76,6 +76,30 @@ func BenchmarkHistogramObserve8(b *testing.B) {
 	benchmarkHistogramObserve(8, b)
 }
 
+func BenchmarkHistogramObserve16(b *testing.B) {
+	benchmarkHistogramObserve(16, b)
+}
+
+func BenchmarkHistogramObserve32(b *testing.B) {
+	benchmarkHistogramObserve(32, b)
+}
+
+func BenchmarkHistogramObserve64(b *testing.B) {
+	benchmarkHistogramObserve(64, b)
+}
+
+func BenchmarkHistogramObserve128(b *testing.B) {
+	benchmarkHistogramObserve(128, b)
+}
+
+func BenchmarkHistogramObserve256(b *testing.B) {
+	benchmarkHistogramObserve(256, b)
+}
+
+func BenchmarkHistogramObserve512(b *testing.B) {
+	benchmarkHistogramObserve(512, b)
+}
+
 func benchmarkHistogramWrite(w int, b *testing.B) {
 	b.StopTimer()
 
