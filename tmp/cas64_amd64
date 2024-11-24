@@ -1,0 +1,16 @@
+// bool	·Cas64(uint64 *val, uint64 old, uint64 new)
+// Atomically:
+//	if(*val == old){
+//		*val = new;
+//		return 1;
+//	} else {
+//		return 0;
+//	}
+TEXT ·Cas64(SB), NOSPLIT, $0-25
+	MOVQ	ptr+0(FP), BX
+	MOVQ	old+8(FP), AX
+	MOVQ	new+16(FP), CX
+	LOCK
+	CMPXCHGQ	CX, 0(BX)
+	SETEQ	ret+24(FP)
+	RET

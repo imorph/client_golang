@@ -1,0 +1,66 @@
+goos: linux
+goarch: amd64
+pkg: github.com/prometheus/client_golang/prometheus
+cpu: Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz
+BenchmarkHistogramObserve1-4     	35744158	       35.60 ns/op
+BenchmarkHistogramObserve1-4     	34382085	       36.93 ns/op
+BenchmarkHistogramObserve1-4     	36278805	       38.50 ns/op
+BenchmarkHistogramObserve1-4     	33002386	       36.09 ns/op
+BenchmarkHistogramObserve1-4     	33623468	       37.88 ns/op
+BenchmarkHistogramObserve1-4     	33512253	       35.82 ns/op
+BenchmarkHistogramObserve2-4     	11074332	       92.75 ns/op
+BenchmarkHistogramObserve2-4     	14106385	       81.69 ns/op
+BenchmarkHistogramObserve2-4     	11384061	       93.33 ns/op
+BenchmarkHistogramObserve2-4     	14743954	       78.77 ns/op
+BenchmarkHistogramObserve2-4     	11211753	       91.93 ns/op
+BenchmarkHistogramObserve2-4     	15621212	       75.91 ns/op
+BenchmarkHistogramObserve4-4     	7406852	      169.4 ns/op
+BenchmarkHistogramObserve4-4     	7092610	      160.3 ns/op
+BenchmarkHistogramObserve4-4     	7022499	      178.1 ns/op
+BenchmarkHistogramObserve4-4     	5981859	      198.4 ns/op
+BenchmarkHistogramObserve4-4     	8371341	      150.0 ns/op
+BenchmarkHistogramObserve4-4     	7569441	      162.7 ns/op
+BenchmarkHistogramObserve8-4     	3498961	      430.3 ns/op
+BenchmarkHistogramObserve8-4     	2494370	      438.9 ns/op
+BenchmarkHistogramObserve8-4     	2028602	      553.3 ns/op
+BenchmarkHistogramObserve8-4     	3079846	      370.2 ns/op
+BenchmarkHistogramObserve8-4     	2502274	      457.9 ns/op
+BenchmarkHistogramObserve8-4     	2915216	      482.6 ns/op
+BenchmarkHistogramObserve16-4    	1510116	      751.9 ns/op
+BenchmarkHistogramObserve16-4    	1146922	     1005 ns/op
+BenchmarkHistogramObserve16-4    	1210441	     1148 ns/op
+BenchmarkHistogramObserve16-4    	1031409	      984.0 ns/op
+BenchmarkHistogramObserve16-4    	1352194	      870.0 ns/op
+BenchmarkHistogramObserve16-4    	1617703	      836.1 ns/op
+BenchmarkHistogramObserve32-4    	 554148	     2698 ns/op
+BenchmarkHistogramObserve32-4    	 658155	     2185 ns/op
+BenchmarkHistogramObserve32-4    	 563965	     2215 ns/op
+BenchmarkHistogramObserve32-4    	 562808	     2029 ns/op
+BenchmarkHistogramObserve32-4    	 525220	     1965 ns/op
+BenchmarkHistogramObserve32-4    	 661394	     2079 ns/op
+BenchmarkHistogramObserve64-4    	 262140	     4153 ns/op
+BenchmarkHistogramObserve64-4    	 274579	     4651 ns/op
+BenchmarkHistogramObserve64-4    	 310470	     4228 ns/op
+BenchmarkHistogramObserve64-4    	 303764	     3377 ns/op
+BenchmarkHistogramObserve64-4    	 327074	     3929 ns/op
+BenchmarkHistogramObserve64-4    	 240444	     4337 ns/op
+BenchmarkHistogramObserve128-4   	 138378	     9548 ns/op
+BenchmarkHistogramObserve128-4   	 143913	     8260 ns/op
+BenchmarkHistogramObserve128-4   	 147170	     7918 ns/op
+BenchmarkHistogramObserve128-4   	 154983	     7919 ns/op
+BenchmarkHistogramObserve128-4   	 139675	     7772 ns/op
+BenchmarkHistogramObserve128-4   	 127444	     8235 ns/op
+BenchmarkHistogramObserve256-4   	  63235	    16645 ns/op
+BenchmarkHistogramObserve256-4   	  62208	    16366 ns/op
+BenchmarkHistogramObserve256-4   	  66886	    19600 ns/op
+BenchmarkHistogramObserve256-4   	  70378	    15383 ns/op
+BenchmarkHistogramObserve256-4   	  68247	    15891 ns/op
+BenchmarkHistogramObserve256-4   	  63475	    16757 ns/op
+BenchmarkHistogramObserve512-4   	  33573	    31656 ns/op
+BenchmarkHistogramObserve512-4   	  35979	    34750 ns/op
+BenchmarkHistogramObserve512-4   	  34678	    30575 ns/op
+BenchmarkHistogramObserve512-4   	  34126	    32177 ns/op
+BenchmarkHistogramObserve512-4   	  38379	    32476 ns/op
+BenchmarkHistogramObserve512-4   	  33315	    31568 ns/op
+PASS
+ok  	github.com/prometheus/client_golang/prometheus	121.481s

@@ -1,0 +1,27 @@
+File: prometheus.test
+Type: cpu
+Time: Nov 23, 2024 at 11:18am (UTC)
+Duration: 138.14s, Total samples = 26.63s (19.28%)
+Entering interactive mode (type "help" for commands, "o" for options)
+(pprof) top 20
+Showing nodes accounting for 25.99s, 97.60% of 26.63s total
+Dropped 137 nodes (cum <= 0.13s)
+      flat  flat%   sum%        cum   cum%
+     9.19s 34.51% 34.51%     23.98s 90.05%  github.com/prometheus/client_golang/prometheus.(*histogram).observe
+     8.69s 32.63% 67.14%      8.70s 32.67%  github.com/prometheus/client_golang/prometheus.atomicUpdateFloat
+     5.78s 21.70% 88.85%     14.79s 55.54%  github.com/prometheus/client_golang/prometheus.(*histogramCounts).observe
+     0.92s  3.45% 92.30%      0.92s  3.45%  github.com/prometheus/client_golang/prometheus.(*histogram).findBucket
+     0.53s  1.99% 94.29%     25.78s 96.81%  github.com/prometheus/client_golang/prometheus.benchmarkHistogramObserve.func1
+     0.32s  1.20% 95.49%     25.22s 94.71%  github.com/prometheus/client_golang/prometheus.(*histogram).Observe
+     0.31s  1.16% 96.66%      9.01s 33.83%  github.com/prometheus/client_golang/prometheus.atomicAddFloat (inline)
+     0.20s  0.75% 97.41%      0.20s  0.75%  runtime.futex
+     0.02s 0.075% 97.48%      0.21s  0.79%  runtime.gcDrain
+     0.02s 0.075% 97.56%      0.48s  1.80%  runtime.schedule
+     0.01s 0.038% 97.60%      0.35s  1.31%  runtime.findRunnable
+         0     0% 97.60%      0.23s  0.86%  runtime.gcBgMarkWorker
+         0     0% 97.60%      0.22s  0.83%  runtime.gcBgMarkWorker.func2
+         0     0% 97.60%      0.19s  0.71%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 97.60%      0.17s  0.64%  runtime.goexit0
+         0     0% 97.60%      0.54s  2.03%  runtime.mcall
+         0     0% 97.60%      0.35s  1.31%  runtime.park_m
+         0     0% 97.60%      0.28s  1.05%  runtime.systemstack

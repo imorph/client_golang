@@ -1,0 +1,26 @@
+File: prometheus.test
+Type: cpu
+Time: Nov 23, 2024 at 11:24am (UTC)
+Duration: 129.34s, Total samples = 345.53s (267.14%)
+Entering interactive mode (type "help" for commands, "o" for options)
+(pprof) top 20
+Showing nodes accounting for 334.36s, 96.77% of 345.53s total
+Dropped 272 nodes (cum <= 1.73s)
+      flat  flat%   sum%        cum   cum%
+   141.46s 40.94% 40.94%    165.27s 47.83%  github.com/prometheus/client_golang/prometheus.(*histogramCounts).observe
+    92.66s 26.82% 67.76%     92.66s 26.82%  github.com/prometheus/client_golang/prometheus.(*histogram).findBucket
+    69.70s 20.17% 87.93%    234.99s 68.01%  github.com/prometheus/client_golang/prometheus.(*histogram).observe
+    21.31s  6.17% 94.10%     23.53s  6.81%  github.com/prometheus/client_golang/prometheus.atomicUpdateFloat
+     2.72s  0.79% 94.88%      2.72s  0.79%  runtime.futex
+     2.38s  0.69% 95.57%    331.43s 95.92%  github.com/prometheus/client_golang/prometheus.benchmarkHistogramObserve.func1
+     1.63s  0.47% 96.04%      4.58s  1.33%  runtime.stealWork
+     1.37s   0.4% 96.44%    329.02s 95.22%  github.com/prometheus/client_golang/prometheus.(*histogram).Observe
+     0.40s  0.12% 96.56%     10.12s  2.93%  runtime.findRunnable
+     0.26s 0.075% 96.63%     23.79s  6.89%  github.com/prometheus/client_golang/prometheus.atomicAddFloat (inline)
+     0.13s 0.038% 96.67%      2.03s  0.59%  runtime.notesleep
+     0.11s 0.032% 96.70%     11.41s  3.30%  runtime.schedule
+     0.06s 0.017% 96.72%      2.09s   0.6%  runtime.mPark (inline)
+     0.06s 0.017% 96.74%     12.35s  3.57%  runtime.mcall
+     0.06s 0.017% 96.75%      2.38s  0.69%  runtime.stopm
+     0.03s 0.0087% 96.76%      1.96s  0.57%  runtime.futexsleep
+     0.02s 0.0058% 96.77%     11.46s  3.32%  runtime.park_m

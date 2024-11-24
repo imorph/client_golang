@@ -24,10 +24,11 @@ import (
 // using the provided updateFunc, with an exponential backoff on contention.
 func atomicUpdateFloat(bits *uint64, updateFunc func(float64) float64) {
 	const (
-		baseBackoff = 1 * time.Millisecond
-		maxBackoff  = 320 * time.Millisecond
+		minBackoff               = 1 * time.Millisecond
+		maxBackoff               = 320 * time.Millisecond
+		maxAttemptsBeforeBackoff = 10
 	)
-	var attempts int
+	attempts := 0
 
 	for {
 		loadedBits := atomic.LoadUint64(bits)
@@ -39,16 +40,16 @@ func atomicUpdateFloat(bits *uint64, updateFunc func(float64) float64) {
 			break
 		} else {
 			attempts++
-			// Calculate backoff duration
-			backoff := baseBackoff * time.Duration(2*attempts)
-			if backoff > maxBackoff {
-				backoff = maxBackoff
+			if attempts > maxAttemptsBeforeBackoff {
+				// Calculate backoff time based on the number of attempts beyond the threshold
+				backoff := minBackoff * time.Duration(attempts-maxAttemptsBeforeBackoff)
+				if backoff > maxBackoff {
+					backoff = maxBackoff
+				}
+				// Randomize the backoff to reduce the chance of threads colliding again
+				jitter := time.Duration(rand.Int63n(int64(backoff / 2)))
+				time.Sleep(backoff + jitter)
 			}
-			// Randomize sleep duration
-			minSleep := backoff / 2
-			maxSleep := backoff
-			sleepDuration := minSleep + time.Duration(rand.Int63n(int64(maxSleep-minSleep)))
-			time.Sleep(sleepDuration)
 		}
 	}
 }

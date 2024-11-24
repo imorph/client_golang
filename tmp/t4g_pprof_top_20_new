@@ -1,0 +1,30 @@
+File: prometheus.test
+Type: cpu
+Time: Nov 23, 2024 at 1:00pm (UTC)
+Duration: 95.71s, Total samples = 95.69s (  100%)
+Entering interactive mode (type "help" for commands, "o" for options)
+(pprof) top 20
+Showing nodes accounting for 92.79s, 96.97% of 95.69s total
+Dropped 205 nodes (cum <= 0.48s)
+Showing top 20 nodes out of 23
+      flat  flat%   sum%        cum   cum%
+    33.75s 35.27% 35.27%     85.30s 89.14%  github.com/prometheus/client_golang/prometheus.(*histogram).observe
+    28.20s 29.47% 64.74%     30.16s 31.52%  github.com/prometheus/client_golang/prometheus.atomicUpdateFloat
+    20.19s 21.10% 85.84%     51.35s 53.66%  github.com/prometheus/client_golang/prometheus.(*histogramCounts).observe
+     3.79s  3.96% 89.80%      3.81s  3.98%  github.com/prometheus/client_golang/prometheus.(*histogram).findBucket
+     2.05s  2.14% 91.94%     92.03s 96.18%  github.com/prometheus/client_golang/prometheus.benchmarkHistogramObserve.func1
+     1.13s  1.18% 93.12%      1.13s  1.18%  runtime.futex
+     0.91s  0.95% 94.07%      0.91s  0.95%  math.Float64frombits (inline)
+     0.85s  0.89% 94.96%     89.97s 94.02%  github.com/prometheus/client_golang/prometheus.(*histogram).Observe
+     0.85s  0.89% 95.85%     31.01s 32.41%  github.com/prometheus/client_golang/prometheus.atomicAddFloat (inline)
+     0.80s  0.84% 96.69%      0.80s  0.84%  math.Float64bits (inline)
+     0.08s 0.084% 96.77%      0.51s  0.53%  runtime.stealWork
+     0.05s 0.052% 96.82%      2.01s  2.10%  runtime.findRunnable
+     0.04s 0.042% 96.86%      0.60s  0.63%  runtime.(*timers).run
+     0.03s 0.031% 96.90%      0.84s  0.88%  runtime.(*timers).check
+     0.03s 0.031% 96.93%      0.87s  0.91%  runtime.wakep
+     0.02s 0.021% 96.95%      2.74s  2.86%  runtime.schedule
+     0.01s  0.01% 96.96%      3.13s  3.27%  runtime.mcall
+     0.01s  0.01% 96.97%      0.77s   0.8%  runtime.startm
+         0     0% 96.97%      0.53s  0.55%  runtime.(*timer).unlockAndRun
+         0     0% 96.97%      0.81s  0.85%  runtime.futexwakeup
