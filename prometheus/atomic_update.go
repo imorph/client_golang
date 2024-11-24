@@ -16,19 +16,26 @@ package prometheus
 import (
 	"math"
 	"math/rand"
+	"runtime"
 	"sync/atomic"
 	"time"
 )
 
+// // backoffFuncType defines the signature for the backoff functions.
+// type backoffFuncType func(attempts int, backoff *time.Duration)
+
 // atomicUpdateFloat atomically updates the float64 value pointed to by bits
-// using the provided updateFunc, with an exponential backoff on contention.
+// using the provided updateFunc. It uses a backoff strategy that adapts to the CPU architecture.
 func atomicUpdateFloat(bits *uint64, updateFunc func(float64) float64) {
-	const (
-		minBackoff               = 1 * time.Millisecond
-		maxBackoff               = 320 * time.Millisecond
-		maxAttemptsBeforeBackoff = 10
-	)
-	attempts := 0
+	var backoff time.Duration
+	var attempts int
+	var calculateBackoff func(_ int, _ time.Duration) time.Duration
+
+	if runtime.GOARCH == "arm" || runtime.GOARCH == "arm64" {
+		calculateBackoff = calculateLinearBackoff
+	} else {
+		calculateBackoff = calculateExpBackoff
+	}
 
 	for {
 		loadedBits := atomic.LoadUint64(bits)
@@ -37,19 +44,48 @@ func atomicUpdateFloat(bits *uint64, updateFunc func(float64) float64) {
 		newBits := math.Float64bits(newFloat)
 
 		if atomic.CompareAndSwapUint64(bits, loadedBits, newBits) {
-			break
+			break // Successful update
 		} else {
 			attempts++
-			if attempts > maxAttemptsBeforeBackoff {
-				// Calculate backoff time based on the number of attempts beyond the threshold
-				backoff := minBackoff * time.Duration(attempts-maxAttemptsBeforeBackoff)
-				if backoff > maxBackoff {
-					backoff = maxBackoff
-				}
-				// Randomize the backoff to reduce the chance of threads colliding again
-				jitter := time.Duration(rand.Int63n(int64(backoff / 2)))
-				time.Sleep(backoff + jitter)
-			}
+			backoff = calculateBackoff(attempts, backoff)
+
+			// Apply jitter to the backoff duration
+			minSleep := backoff / 2
+			maxSleep := backoff
+			sleepDuration := minSleep + time.Duration(rand.Int63n(int64(maxSleep-minSleep)))
+			time.Sleep(sleepDuration)
 		}
 	}
+}
+
+// calculateBackoff implements linear backoff
+func calculateLinearBackoff(attempts int, _ time.Duration) time.Duration {
+	const (
+		baseBackoff = 1 * time.Millisecond
+		maxBackoff  = 320 * time.Millisecond
+	)
+
+	backoff := baseBackoff * time.Duration(attempts)
+	if backoff > maxBackoff {
+		backoff = maxBackoff
+	}
+	return backoff
+}
+
+// calculateBackoff implements exponential backoff with jitter for non-ARM architectures.
+func calculateExpBackoff(_ int, previousBackoff time.Duration) time.Duration {
+	const (
+		initialBackoff = 10 * time.Millisecond
+		maxBackoff     = 320 * time.Millisecond
+	)
+
+	if previousBackoff == 0 {
+		return initialBackoff
+	}
+
+	backoff := previousBackoff * 2
+	if backoff > maxBackoff {
+		backoff = maxBackoff
+	}
+	return backoff
 }
